@@ -90,6 +90,7 @@ public:
     static const char * const keyReconfigA2dpSupported;
 
     String8 toString() const { return toStringImpl(true); }
+    String8 toString();
     String8 keysToString() const { return toStringImpl(false); }
 
     status_t add(const String8& key, const String8& value);
@@ -100,8 +101,11 @@ public:
     status_t remove(const String8& key);
 
     status_t get(const String8& key, String8& value) const;
+    status_t get(const String8& key, String8& value);
     status_t getInt(const String8& key, int& value) const;
+    status_t getInt(const String8& key, int& value);
     status_t getFloat(const String8& key, float& value) const;
+    status_t getFloat(const String8& key, float& value);
     status_t getAt(size_t index, String8& key) const;
     status_t getAt(size_t index, String8& key, String8& value) const;
 

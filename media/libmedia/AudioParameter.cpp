@@ -105,6 +105,11 @@ String8 AudioParameter::toStringImpl(bool useValues) const
     return str;
 }
 
+String8 AudioParameter::toString()
+{
+    return toStringImpl(true);
+}
+
 status_t AudioParameter::add(const String8& key, const String8& value)
 {
     if (mParameters.indexOfKey(key) < 0) {
@@ -163,6 +168,16 @@ status_t AudioParameter::get(const String8& key, String8& value) const
     }
 }
 
+status_t AudioParameter::get(const String8& key, String8& value)
+{
+    if (mParameters.indexOfKey(key) >= 0) {
+        value = mParameters.valueFor(key);
+        return NO_ERROR;
+    } else {
+        return BAD_VALUE;
+    }
+}
+
 status_t AudioParameter::getInt(const String8& key, int& value) const
 {
     String8 str8;
@@ -179,7 +194,39 @@ status_t AudioParameter::getInt(const String8& key, int& value) const
     return result;
 }
 
+status_t AudioParameter::getInt(const String8& key, int& value)
+{
+    String8 str8;
+    status_t result = get(key, str8);
+    value = 0;
+    if (result == NO_ERROR) {
+        int val;
+        if (sscanf(str8.string(), "%d", &val) == 1) {
+            value = val;
+        } else {
+            result = INVALID_OPERATION;
+        }
+    }
+    return result;
+}
+
 status_t AudioParameter::getFloat(const String8& key, float& value) const
+{
+    String8 str8;
+    status_t result = get(key, str8);
+    value = 0;
+    if (result == NO_ERROR) {
+        float val;
+        if (sscanf(str8.string(), "%f", &val) == 1) {
+            value = val;
+        } else {
+            result = INVALID_OPERATION;
+        }
+    }
+    return result;
+}
+
+status_t AudioParameter::getFloat(const String8& key, float& value)
 {
     String8 str8;
     status_t result = get(key, str8);
